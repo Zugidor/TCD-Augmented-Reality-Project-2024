@@ -25,5 +25,15 @@ MonoBehaviour:
       m_GuidHigh: 6985261355388404553
     m_Size: {x: 0.03, y: 0.03}
     m_SpecifySize: 1
-    m_Name: marker
-    m_Texture: {fileID: 0}
+    m_Name: PathStart
+    m_Texture: {fileID: 2800000, guid: 1c3e24fb38c769144983307731a2f060, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 4647169506973503218
+      m_GuidHigh: 5439559228046527374
+    m_SerializedTextureGuid:
+      m_GuidLow: 5756740184717005463
+      m_GuidHigh: 14734897626191388200
+    m_Size: {x: 0.03, y: 0.03}
+    m_SpecifySize: 1
+    m_Name: Tower
+    m_Texture: {fileID: 2800000, guid: 8e4612970cb24fe4285ee27a52df7ccc, type: 3}
