@@ -194,9 +194,9 @@ GameObject:
   - component: {fileID: 896030353}
   - component: {fileID: 896030359}
   - component: {fileID: 896030358}
+  - component: {fileID: 896030355}
   - component: {fileID: 896030357}
   - component: {fileID: 896030356}
-  - component: {fileID: 896030355}
   - component: {fileID: 896030354}
   m_Layer: 0
   m_Name: AR Cam
@@ -475,7 +475,8 @@ GameObject:
   - component: {fileID: 1014624313}
   - component: {fileID: 1014624312}
   - component: {fileID: 1014624314}
-  m_Layer: 0
+  - component: {fileID: 1014624315}
+  m_Layer: 2
   m_Name: XR Origin (AR Rig)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,7 +498,7 @@ MonoBehaviour:
   m_Camera: {fileID: 896030359}
   m_OriginBaseGameObject: {fileID: 1014624310}
   m_CameraFloorOffsetObject: {fileID: 0}
-  m_RequestedTrackingOriginMode: 0
+  m_RequestedTrackingOriginMode: 1
   m_CameraYOffset: 0
 --- !u!4 &1014624313
 Transform:
@@ -530,8 +531,27 @@ MonoBehaviour:
   m_SerializedLibrary: {fileID: 11400000, guid: f8f2d0ded2651ee44b3df547211224ef,
     type: 2}
   m_MaxNumberOfMovingImages: 0
-  m_TrackedImagePrefab: {fileID: 1606835107500538321, guid: 4167040a90ebeac4895241ddcc562d72,
-    type: 3}
+  m_TrackedImagePrefab: {fileID: 0}
+--- !u!114 &1014624315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014624310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b603409e2b6132b46b58892f8a55c04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PrefabsList:
+  - imageGuid: a2add501-087c-433b-9098-2aa3f46784de
+    imagePrefab: {fileID: 338933917223506184, guid: 41de65c6127f8b3458ec22355933bf8b,
+      type: 3}
+  - imageGuid: 7a2ecef2-100b-407e-8e4b-69424c327d4b
+    imagePrefab: {fileID: 1606835107500538321, guid: 4167040a90ebeac4895241ddcc562d72,
+      type: 3}
+  m_ImageLibrary: {fileID: 11400000, guid: f8f2d0ded2651ee44b3df547211224ef, type: 2}
 --- !u!1 &1075000274
 GameObject:
   m_ObjectHideFlags: 0
