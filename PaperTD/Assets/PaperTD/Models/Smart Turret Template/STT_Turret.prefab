@@ -283,7 +283,8 @@ MonoBehaviour:
   targeting:
     aimingSpeed: 1
     aimingDelay: 1
-    tagsToFire: []
+    tagsToFire:
+    - Enemy
     targets: []
     target: {fileID: 0}
   VFX:
