@@ -5,7 +5,7 @@ public class CameraLogger : MonoBehaviour
 {
 	ARCameraManager arCamMan;
 	readonly float[] fpsPast300Frames = new float[300];
-	float fps, avg;
+	float fps, avg, min, max;
 
 	// Start is called before the first frame update
 	void Start()
@@ -32,13 +32,15 @@ public class CameraLogger : MonoBehaviour
 		}
 		fpsPast300Frames[^1] = fps;
 
-		// get average fps
+		// get average, minimum, and maximum fps over the past ~10 seconds (at ~30fps)
 		avg = 0;
 		for (int i = 0; i < fpsPast300Frames.Length; i++)
 		{
 			avg += fpsPast300Frames[i];
 		}
 		avg /= fpsPast300Frames.Length;
+		min = Mathf.Min(fpsPast300Frames);
+		max = Mathf.Max(fpsPast300Frames);
 
 		// log stats (camera resolution, screen resolution, target framerate, actual framerate)
 		Debug.Log("Camera Resolution: " + arCamMan.currentConfiguration.Value.width.ToString()
@@ -46,6 +48,8 @@ public class CameraLogger : MonoBehaviour
 			+ "\nScreen Resolution: " + Screen.width.ToString() + "x" + Screen.height.ToString()
 			+ "\nTarget FPS: " + arCamMan.currentConfiguration.Value.framerate.ToString()
 			+ "\nActual FPS: " + fps.ToString()
-			+ "\nAverage FPS: " + avg.ToString());
+			+ "\nAverage FPS: " + avg.ToString()
+			+ "\nMinimum FPS: " + min.ToString()
+			+ "\nMaximum FPS: " + max.ToString());
 	}
 }
