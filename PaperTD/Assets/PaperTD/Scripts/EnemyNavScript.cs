@@ -25,6 +25,10 @@ public class EnemyNavScript : MonoBehaviour
         {
             Vector3 travelDirection = (target - gameObject.transform.position).normalized;
             gameObject.transform.position += movementSpeed * Time.deltaTime * travelDirection;
+            Vector3 forwardOnPlane = gameObject.transform.forward;
+            forwardOnPlane.y = 0;
+            float angle = Vector3.Angle(forwardOnPlane.normalized, travelDirection);
+            gameObject.transform.Rotate(new Vector3(0, 1, 0), angle);
         }
         else if (currentTargetTag == "MiddleNode")
         {
