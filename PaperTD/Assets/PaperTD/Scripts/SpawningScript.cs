@@ -11,12 +11,10 @@ public class SpawningScript : MonoBehaviour
     public float minInterval;
     public int maxEnemyCount;
 
-    int enemyCount;
     float timer;
 
     void Start()
     {
-        enemyCount = 0;
         timer = Random.Range(minInterval, maxInterval);
     }
 
@@ -33,14 +31,14 @@ public class SpawningScript : MonoBehaviour
             if (timer <= 0)
             {
                 timer = Random.Range(minInterval, maxInterval);
-
+                
+                int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
                 if (enemyCount < maxEnemyCount)
                 {
                     // Get the starting node
                     Vector3 spawnPosition = GameObject.FindGameObjectWithTag("StartNode").transform.position;
                     print(spawnPosition);
                     Instantiate(enemy, spawnPosition, Quaternion.identity);
-                    enemyCount++;
                 }
             }
         }
