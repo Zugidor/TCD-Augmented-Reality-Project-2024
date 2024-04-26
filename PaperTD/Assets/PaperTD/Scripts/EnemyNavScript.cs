@@ -20,7 +20,7 @@ public class EnemyNavScript : MonoBehaviour
 	void Update()
 	{
 		float distanceFromNode = (gameObject.transform.position - target.position).magnitude;
-		if (distanceFromNode > 1 * scale)
+		if (distanceFromNode > 0.5 * scale)
 		{
 			Vector3 travelDirection = (target.position - gameObject.transform.position).normalized;
 			gameObject.transform.position += movementSpeed * Time.deltaTime * travelDirection;
