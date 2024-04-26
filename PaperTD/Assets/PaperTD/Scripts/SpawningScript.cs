@@ -7,6 +7,12 @@ public class SpawningScript : MonoBehaviour
 	public float minInterval;
 	public int maxEnemyCount;
 
+	[HideInInspector]
+	public bool begin = false;
+
+	[HideInInspector]
+	public bool pathPresent = false;
+
 	float timer;
 
 	void Start()
@@ -16,12 +22,14 @@ public class SpawningScript : MonoBehaviour
 
 	void Update()
 	{
-		// Check that a full enemy path is present
-		bool pathPresent = GameObject.FindGameObjectWithTag("StartNode") != null
-			&& GameObject.FindGameObjectWithTag("MiddleNode") != null
-			&& GameObject.FindGameObjectWithTag("EndNode") != null;
+		if (!pathPresent)
+		{
+			pathPresent = GameObject.FindGameObjectWithTag("StartNode") != null
+				&& GameObject.FindGameObjectWithTag("MiddleNode") != null
+				&& GameObject.FindGameObjectWithTag("EndNode") != null;
+		}
 
-		if (pathPresent)
+		if (pathPresent && begin)
 		{
 			timer -= Time.deltaTime;
 			if (timer <= 0)

@@ -476,6 +476,7 @@ GameObject:
   - component: {fileID: 1014624312}
   - component: {fileID: 1014624314}
   - component: {fileID: 1014624315}
+  - component: {fileID: 1014624316}
   m_Layer: 2
   m_Name: XR Origin (AR Rig)
   m_TagString: Untagged
@@ -558,6 +559,18 @@ MonoBehaviour:
     imagePrefab: {fileID: 1178177964436236, guid: 2fafc82d17757493ca36f1cfb64b683d,
       type: 3}
   m_ImageLibrary: {fileID: 11400000, guid: f8f2d0ded2651ee44b3df547211224ef, type: 2}
+--- !u!114 &1014624316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014624310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd5fffbe8b7358142961df25fe43142d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1057119830
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +583,7 @@ GameObject:
   - component: {fileID: 1057119831}
   m_Layer: 0
   m_Name: EnemySpawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -590,7 +603,9 @@ MonoBehaviour:
   enemy: {fileID: 1458391615630120, guid: 6d18ca3ac0d2ecd4aa99a8099af486bb, type: 3}
   maxInterval: 2
   minInterval: 0.5
-  maxEnemyCount: 15
+  maxEnemyCount: 5
+  begin: 0
+  pathPresent: 0
 --- !u!4 &1057119832
 Transform:
   m_ObjectHideFlags: 0
