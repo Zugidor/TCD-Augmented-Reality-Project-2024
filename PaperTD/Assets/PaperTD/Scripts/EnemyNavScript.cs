@@ -3,7 +3,7 @@ using UnityEngine;
 // Class with Hard Coded 3 Node Path
 public class EnemyNavScript : MonoBehaviour
 {
-	public float movementSpeed = 1.0f;
+	public float movementSpeed = 3.0f;
 	float scale;
 	string currentTargetTag = "MiddleNode";
 	Vector3 targetPos;
@@ -12,7 +12,7 @@ public class EnemyNavScript : MonoBehaviour
 	void Start()
 	{
 		targetPos = GameObject.FindGameObjectWithTag(currentTargetTag).transform.position;
-		scale = gameObject.transform.localScale.x;
+		scale = gameObject.transform.lossyScale.x;
 		movementSpeed *= scale;
 	}
 
@@ -20,7 +20,7 @@ public class EnemyNavScript : MonoBehaviour
 	void Update()
 	{
 		float distanceFromNode = (gameObject.transform.position - targetPos).magnitude;
-		if (distanceFromNode > 0.1 * scale)
+		if (distanceFromNode > 1 * scale)
 		{
 			Vector3 travelDirection = (targetPos - gameObject.transform.position).normalized;
 			gameObject.transform.position += movementSpeed * Time.deltaTime * travelDirection;
