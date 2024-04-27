@@ -279,11 +279,12 @@ MonoBehaviour:
     canFire: 1
     power: 10
     ShootingDelay: 1
-    radius: 5
+    radius: 7
   targeting:
     aimingSpeed: 1
     aimingDelay: 1
-    tagsToFire: []
+    tagsToFire:
+    - Enemy
     targets: []
     target: {fileID: 0}
   VFX:
