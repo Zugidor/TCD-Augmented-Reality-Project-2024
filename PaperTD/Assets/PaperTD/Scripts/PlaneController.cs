@@ -54,7 +54,20 @@ public class PlaneController : MonoBehaviour
 		{
 			if (plane == ground)
 			{
-				// ground plane logic e.g. adding a tag for other scripts to refer to
+				float gy = ground.transform.position.y;
+				float nodeOffset = (float)(gy + (1.4 * midN.transform.lossyScale.x));
+				
+				Vector3 p = tower.transform.position;
+				tower.transform.position.Set(p.x, gy, p.z);
+
+				p = startN.transform.position;
+				startN.transform.position.Set(p.x, gy + nodeOffset, p.z);
+
+				p = midN.transform.position;
+				midN.transform.position.Set(p.x, gy + nodeOffset, p.z);
+
+				p = endN.transform.position;
+				endN.transform.position.Set(p.x, gy + nodeOffset, p.z);
 			}
 			else // TODO: this may not be necessary, test if removing this makes any difference
 			{
