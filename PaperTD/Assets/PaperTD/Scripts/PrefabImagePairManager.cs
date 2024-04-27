@@ -7,6 +7,8 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine;
 
+// NOTE: This script is a modified version of the PrefabImagePairManager script from the ARFoundation Samples.
+
 // Listens for images detected by the XRImageTrackingSubsystem and overlays some prefabs on top of the detected image.
 [RequireComponent(typeof(ARTrackedImageManager))]
 public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackReceiver
@@ -62,37 +64,43 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 		}
 	}
 
-	void Awake()
+	void Start()
 	{
 		m_TrackedImageManager = GetComponent<ARTrackedImageManager>();
-	}
-
-	void OnEnable()
-	{
 		m_TrackedImageManager.trackedImagesChanged += OnTrackedImagesChanged;
-	}
-
-	void OnDisable()
-	{
-		m_TrackedImageManager.trackedImagesChanged -= OnTrackedImagesChanged;
 	}
 
 	void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
 	{
 		foreach (ARTrackedImage trackedImage in eventArgs.added)
 		{
-			// Give the initial image a reasonable default scale
-			float minLocalScalar = Mathf.Min(trackedImage.size.x, trackedImage.size.y) / 2;
+			// Give the initial image a smallish default scale based on dimensions
+			float minLocalScalar = Mathf.Min(trackedImage.size.x, trackedImage.size.y) / 4;
 			trackedImage.transform.localScale = new Vector3(minLocalScalar, minLocalScalar, minLocalScalar);
-			AssignPrefab(trackedImage);
-		}
-	}
 
-	void AssignPrefab(ARTrackedImage trackedImage)
-	{
-		if (m_PrefabsDictionary.TryGetValue(trackedImage.referenceImage.guid, out GameObject prefab))
-		{
-			m_Instantiated[trackedImage.referenceImage.guid] = Instantiate(prefab, trackedImage.transform);
+			if (m_PrefabsDictionary.TryGetValue(trackedImage.referenceImage.guid, out GameObject prefab))
+			{
+				string prefabTag = prefab.tag;
+				ARAnchor planeAnchor = gameObject.GetComponent<PlaneController>().groundAnchor;
+				// TODO: parent the image and/or prefab to the plane anchor for actual level placement, the below does NOT work
+				if (planeAnchor != null)
+				{
+					// set y and rotations based on plane anchor, x and z unchanged.
+					if (prefabTag == "Tower")
+					{
+						trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y, trackedImage.transform.position.z);
+						trackedImage.transform.rotation = planeAnchor.transform.rotation;
+					}
+					else // nodes are offset above the ground plane for enemies to travel at turret firing height
+					{
+						trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y + 1.4f * minLocalScalar, trackedImage.transform.position.z);
+						trackedImage.transform.rotation = planeAnchor.transform.rotation;
+					}
+				}
+
+				GameObject instance = Instantiate(prefab, trackedImage.transform);
+				m_Instantiated[trackedImage.referenceImage.guid] = instance;
+			}
 		}
 	}
 
@@ -103,16 +111,6 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 			return prefab;
 		}
 		return null;
-	}
-
-	public void SetPrefabForReferenceImage(XRReferenceImage referenceImage, GameObject alternativePrefab)
-	{
-		m_PrefabsDictionary[referenceImage.guid] = alternativePrefab;
-		if (m_Instantiated.TryGetValue(referenceImage.guid, out GameObject instantiatedPrefab))
-		{
-			m_Instantiated[referenceImage.guid] = Instantiate(alternativePrefab, instantiatedPrefab.transform.parent);
-			Destroy(instantiatedPrefab);
-		}
 	}
 
 #if UNITY_EDITOR

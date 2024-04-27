@@ -3,46 +3,30 @@ using UnityEngine.XR.ARFoundation;
 
 public class PlaneController : MonoBehaviour
 {
-	GameObject startN, midN, endN, tower;
-	ARPlaneManager planeMan;
+	[HideInInspector]
+	public ARAnchor groundAnchor;
+
 	ARPlane ground;
+	ARPlaneManager planeMan;
+	ARAnchorManager anchorMan;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		planeMan = GetComponent<ARPlaneManager>();
 		planeMan.planesChanged += OnPlanesChanged;
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-		// only looking for and finding one of each
-		if (startN == null)
-		{
-			startN = GameObject.FindGameObjectWithTag("StartNode");
-		}
-		if (midN == null)
-		{
-			midN = GameObject.FindGameObjectWithTag("MiddleNode");
-		}
-		if (endN == null)
-		{
-			endN = GameObject.FindGameObjectWithTag("EndNode");
-		}
-		if (tower == null)
-		{
-			tower = GameObject.FindGameObjectWithTag("Tower");
-		}
+		anchorMan = GetComponent<ARAnchorManager>();
 	}
 
 	public void OnPlanesChanged(ARPlanesChangedEventArgs changes)
 	{
 		foreach (ARPlane plane in changes.added)
 		{
+			// assuming first detected plane is the ground, only one we care about
 			if (ground == null)
 			{
 				ground = plane;
+				groundAnchor = anchorMan.AttachAnchor(ground, new Pose(ground.center, ground.transform.rotation));
 			}
 			else
 			{
@@ -54,30 +38,7 @@ public class PlaneController : MonoBehaviour
 		{
 			if (plane == ground)
 			{
-				float gy = ground.transform.position.y;
-				float nodeOffset = (float)(gy + (1.4 * midN.transform.lossyScale.x));
-
-				Debug.Log("Ground Y: " + gy + " Node Offset: " + nodeOffset + " Scale: " + midN.transform.lossyScale.x);
-
-				Vector3 p = tower.transform.position;
-				tower.transform.position.Set(p.x, gy, p.z);
-
-				Debug.Log("Tower Y: " + tower.transform.position.y);
-
-				p = startN.transform.position;
-				startN.transform.position.Set(p.x, gy + nodeOffset, p.z);
-
-				Debug.Log("Start Y: " + startN.transform.position.y);
-
-				p = midN.transform.position;
-				midN.transform.position.Set(p.x, gy + nodeOffset, p.z);
-
-				Debug.Log("Middle Y: " + midN.transform.position.y);
-
-				p = endN.transform.position;
-				endN.transform.position.Set(p.x, gy + nodeOffset, p.z);
-
-				Debug.Log("End Y: " + endN.transform.position.y);
+				// anchor is updated automatically
 			}
 		}
 
@@ -86,6 +47,8 @@ public class PlaneController : MonoBehaviour
 			if (plane == ground)
 			{
 				ground = null;
+				Destroy(groundAnchor); // we manually destroy ARAnchors, but not ARPlanes (see Unity docs)
+				groundAnchor = null;
 			}
 		}
 	}
