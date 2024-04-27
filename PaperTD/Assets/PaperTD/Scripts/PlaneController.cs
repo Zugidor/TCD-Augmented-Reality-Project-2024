@@ -56,22 +56,28 @@ public class PlaneController : MonoBehaviour
 			{
 				float gy = ground.transform.position.y;
 				float nodeOffset = (float)(gy + (1.4 * midN.transform.lossyScale.x));
-				
+
+				Debug.Log("Ground Y: " + gy + " Node Offset: " + nodeOffset + " Scale: " + midN.transform.lossyScale.x);
+
 				Vector3 p = tower.transform.position;
 				tower.transform.position.Set(p.x, gy, p.z);
+
+				Debug.Log("Tower Y: " + tower.transform.position.y);
 
 				p = startN.transform.position;
 				startN.transform.position.Set(p.x, gy + nodeOffset, p.z);
 
+				Debug.Log("Start Y: " + startN.transform.position.y);
+
 				p = midN.transform.position;
 				midN.transform.position.Set(p.x, gy + nodeOffset, p.z);
 
+				Debug.Log("Middle Y: " + midN.transform.position.y);
+
 				p = endN.transform.position;
 				endN.transform.position.Set(p.x, gy + nodeOffset, p.z);
-			}
-			else // TODO: this may not be necessary, test if removing this makes any difference
-			{
-				plane.gameObject.SetActive(false);
+
+				Debug.Log("End Y: " + endN.transform.position.y);
 			}
 		}
 
