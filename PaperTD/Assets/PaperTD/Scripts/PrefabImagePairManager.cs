@@ -33,8 +33,6 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 
 	Dictionary<Guid, GameObject> m_PrefabsDictionary = new();
 
-	readonly Dictionary<Guid, GameObject> m_Instantiated = new();
-
 	ARTrackedImageManager m_TrackedImageManager;
 
 	[SerializeField]
@@ -78,28 +76,21 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 			float minLocalScalar = Mathf.Min(trackedImage.size.x, trackedImage.size.y) / 4;
 			trackedImage.transform.localScale = new Vector3(minLocalScalar, minLocalScalar, minLocalScalar);
 
-			if (m_PrefabsDictionary.TryGetValue(trackedImage.referenceImage.guid, out GameObject prefab))
+			ARAnchor planeAnchor = gameObject.GetComponent<PlaneController>().groundAnchor;
+			if (m_PrefabsDictionary.TryGetValue(trackedImage.referenceImage.guid, out GameObject prefab) && planeAnchor != null)
 			{
 				string prefabTag = prefab.tag;
-				ARAnchor planeAnchor = gameObject.GetComponent<PlaneController>().groundAnchor;
-				// TODO: parent the image and/or prefab to the plane anchor for actual level placement, the below does NOT work
-				if (planeAnchor != null)
+				if (prefabTag == "Tower")
 				{
-					// set y and rotations based on plane anchor, x and z unchanged.
-					if (prefabTag == "Tower")
-					{
-						trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y, trackedImage.transform.position.z);
-						trackedImage.transform.rotation = planeAnchor.transform.rotation;
-					}
-					else // nodes are offset above the ground plane for enemies to travel at turret firing height
-					{
-						trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y + 1.4f * minLocalScalar, trackedImage.transform.position.z);
-						trackedImage.transform.rotation = planeAnchor.transform.rotation;
-					}
+					trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y, trackedImage.transform.position.z);
+					trackedImage.transform.rotation = planeAnchor.transform.rotation;
 				}
-
-				GameObject instance = Instantiate(prefab, trackedImage.transform);
-				m_Instantiated[trackedImage.referenceImage.guid] = instance;
+				else // nodes are offset above the ground plane for enemies to travel at turret firing height
+				{
+					trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y + 1.4f * minLocalScalar, trackedImage.transform.position.z);
+					trackedImage.transform.rotation = planeAnchor.transform.rotation;
+				}
+				Instantiate(prefab, trackedImage.transform);
 			}
 		}
 	}
