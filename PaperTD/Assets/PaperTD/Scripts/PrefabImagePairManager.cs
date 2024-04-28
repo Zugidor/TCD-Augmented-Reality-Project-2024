@@ -98,6 +98,11 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 						planeAnchor.transform.position.y + 1.4f * minLocalScalar,
 						newImage.transform.position.z);
 					newImage.transform.rotation = planeAnchor.transform.rotation;
+					// nodes not visible in release build
+					if (!Debug.isDebugBuild)
+					{
+						prefab.GetComponent<MeshRenderer>().enabled = false;
+					}
 				}
 				Instantiate(prefab, newImage.transform);
 			}

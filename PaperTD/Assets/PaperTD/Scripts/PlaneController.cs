@@ -6,7 +6,9 @@ public class PlaneController : MonoBehaviour
 	[HideInInspector]
 	public ARAnchor groundAnchor;
 
-	ARPlane ground;
+	[HideInInspector]
+	public ARPlane ground;
+
 	ARPlaneManager planeMan;
 	ARAnchorManager anchorMan;
 
@@ -27,6 +29,10 @@ public class PlaneController : MonoBehaviour
 			{
 				ground = plane;
 				groundAnchor = anchorMan.AttachAnchor(ground, new Pose(ground.center, ground.transform.rotation));
+				if (!Debug.isDebugBuild)
+				{
+					ground.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
+				}
 			}
 			else
 			{
