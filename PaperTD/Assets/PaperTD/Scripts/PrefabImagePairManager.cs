@@ -8,6 +8,7 @@ using UnityEngine.XR.ARSubsystems;
 using UnityEngine;
 
 // NOTE: This script is a modified version of the PrefabImagePairManager script from the ARFoundation Samples.
+// The main modifications are seen in the OnTrackedImagesChanged() method.
 
 // Listens for images detected by the XRImageTrackingSubsystem and overlays some prefabs on top of the detected image.
 [RequireComponent(typeof(ARTrackedImageManager))]

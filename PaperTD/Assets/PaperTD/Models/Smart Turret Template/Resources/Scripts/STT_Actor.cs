@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+// NOTE: This script is a largely unmodified version of the Actor script from the Smart Turret Template. See Source.txt for original link to asset.
+
 [System.Serializable]
 public class ActorParameters
 {

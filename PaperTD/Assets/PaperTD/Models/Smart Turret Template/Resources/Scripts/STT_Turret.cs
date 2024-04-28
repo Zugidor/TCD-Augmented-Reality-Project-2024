@@ -2,6 +2,8 @@
 using System.Linq;
 using UnityEngine;
 
+// NOTE: This script is a modified version of the Turret script from the Smart Turret Template. See Source.txt for original link to asset.
+
 [System.Serializable]
 public class TurretParameters
 {
