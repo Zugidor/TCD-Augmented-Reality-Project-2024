@@ -68,30 +68,67 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 		m_TrackedImageManager.trackedImagesChanged += OnTrackedImagesChanged;
 	}
 
+	// When a new image is detected, instantiate a prefab on top of it.
 	void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
 	{
-		foreach (ARTrackedImage trackedImage in eventArgs.added)
+		ARAnchor planeAnchor = gameObject.GetComponent<PlaneController>().groundAnchor;
+		// for each new image
+		foreach (ARTrackedImage newImage in eventArgs.added)
 		{
 			// Give the initial image a smallish default scale based on dimensions
-			float minLocalScalar = Mathf.Min(trackedImage.size.x, trackedImage.size.y) / 4;
-			trackedImage.transform.localScale = new Vector3(minLocalScalar, minLocalScalar, minLocalScalar);
+			float minLocalScalar = Mathf.Min(newImage.size.x, newImage.size.y) / 4;
+			newImage.transform.localScale = new Vector3(minLocalScalar, minLocalScalar, minLocalScalar);
 
-			ARAnchor planeAnchor = gameObject.GetComponent<PlaneController>().groundAnchor;
-			if (m_PrefabsDictionary.TryGetValue(trackedImage.referenceImage.guid, out GameObject prefab) && planeAnchor != null)
+			if (m_PrefabsDictionary.TryGetValue(newImage.referenceImage.guid, out GameObject prefab) && planeAnchor != null)
 			{
 				string prefabTag = prefab.tag;
 				if (prefabTag == "Tower")
 				{
-					trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y, trackedImage.transform.position.z);
-					trackedImage.transform.rotation = planeAnchor.transform.rotation;
+					newImage.transform.position.Set(
+						newImage.transform.position.x,
+						planeAnchor.transform.position.y,
+						newImage.transform.position.z);
+					newImage.transform.rotation = planeAnchor.transform.rotation;
 				}
 				else // nodes are offset above the ground plane for enemies to travel at turret firing height
 				{
-					trackedImage.transform.position.Set(trackedImage.transform.position.x, planeAnchor.transform.position.y + 1.4f * minLocalScalar, trackedImage.transform.position.z);
-					trackedImage.transform.rotation = planeAnchor.transform.rotation;
+					newImage.transform.position.Set(
+						newImage.transform.position.x,
+						planeAnchor.transform.position.y + 1.4f * minLocalScalar,
+						newImage.transform.position.z);
+					newImage.transform.rotation = planeAnchor.transform.rotation;
 				}
-				Instantiate(prefab, trackedImage.transform);
+				Instantiate(prefab, newImage.transform);
 			}
+		}
+		// for each updated image
+		foreach (ARTrackedImage updatedImage in eventArgs.updated)
+		{
+			if (m_PrefabsDictionary.TryGetValue(updatedImage.referenceImage.guid, out GameObject prefab) && planeAnchor != null)
+			{
+				string prefabTag = prefab.tag;
+				if (prefabTag == "Tower")
+				{
+					updatedImage.transform.position.Set(
+						updatedImage.transform.position.x,
+						planeAnchor.transform.position.y,
+						updatedImage.transform.position.z);
+					updatedImage.transform.rotation = planeAnchor.transform.rotation;
+				}
+				else // nodes are offset above the ground plane for enemies to travel at turret firing height
+				{
+					updatedImage.transform.position.Set(
+						updatedImage.transform.position.x,
+						planeAnchor.transform.position.y + 1.4f * updatedImage.transform.localScale.x,
+						updatedImage.transform.position.z);
+					updatedImage.transform.rotation = planeAnchor.transform.rotation;
+				}
+			}
+		}
+		// for each removed image
+		foreach (ARTrackedImage _ in eventArgs.removed)
+		{
+			// do nothing
 		}
 	}
 
