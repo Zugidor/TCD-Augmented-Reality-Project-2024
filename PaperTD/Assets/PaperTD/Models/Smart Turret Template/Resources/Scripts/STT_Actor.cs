@@ -78,7 +78,7 @@ public class STT_Actor : MonoBehaviour
 		GetComponent<Collider>().enabled = false;
 		GetComponent<Renderer>().enabled = false;
 		GetComponent<AudioSource>().PlayOneShot(SFX.destroyClip);
-		FindObjectOfType<CurrencyController>().addCurrency(1);
+		FindObjectOfType<CurrencyController>().AddCurrency(1);
 		Destroy(gameObject, 2);
 	}
 }

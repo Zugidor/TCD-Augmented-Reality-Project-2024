@@ -39,6 +39,8 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 	[SerializeField]
 	XRReferenceImageLibrary m_ImageLibrary;
 
+	CurrencyController currencyController;
+
 	public XRReferenceImageLibrary ImageLibrary
 	{
 		get => m_ImageLibrary;
@@ -67,6 +69,7 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 	{
 		m_TrackedImageManager = GetComponent<ARTrackedImageManager>();
 		m_TrackedImageManager.trackedImagesChanged += OnTrackedImagesChanged;
+		currencyController = gameObject.GetComponent<CurrencyController>();
 	}
 
 	// When a new image is detected, instantiate a prefab on top of it.
@@ -90,6 +93,7 @@ public class PrefabImagePairManager : MonoBehaviour, ISerializationCallbackRecei
 						planeAnchor.transform.position.y,
 						newImage.transform.position.z);
 					newImage.transform.rotation = planeAnchor.transform.rotation;
+					currencyController.SubtractCurrency(10); // tower costs 10 currency
 				}
 				else // nodes are offset above the ground plane for enemies to travel at turret firing height
 				{

@@ -9,6 +9,7 @@ public class StartButton : MonoBehaviour
 	GameObject tower;
 	readonly float margin = 50;
 	readonly int font = 50;
+	int towerLvl = 1;
 
 	void Start()
 	{
@@ -20,7 +21,6 @@ public class StartButton : MonoBehaviour
 	{
 		pathPresent = spawner.GetComponent<SpawningScript>().pathPresent;
 		begin = spawner.GetComponent<SpawningScript>().begin;
-		currentLvl = tower.GetComponentInChildren<STT_Turret>().upgradeLvl;
 	}
 
 	void OnGUI()
@@ -36,12 +36,17 @@ public class StartButton : MonoBehaviour
 				spawner.GetComponent<SpawningScript>().begin = true;
 			}
 		}
-		if (pathPresent && begin && currentLvl < 3)
+		else if (pathPresent && begin && towerLvl < 4)
 		{
-			if (GUILayout.Button("Upgrade Lvl " + (currentLvl + 1)))
+			if (GUILayout.Button($"Upgrade Lvl{towerLvl} Tower to Lvl{towerLvl + 1}"))
 			{
-				tower.GetComponentInChildren<STT_Turret>().Upgrade();
+				towerLvl++;
+				tower.GetComponentInChildren<STT_Turret>().UpgradeTo(towerLvl);
 			}
+		}
+		else if (pathPresent && begin && towerLvl == 4)
+		{
+			GUILayout.Button("Max tower level reached");
 		}
 
 		GUILayout.EndArea();

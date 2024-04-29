@@ -69,9 +69,8 @@ public class STT_Turret : MonoBehaviour
 	public TurretTargeting targeting;
 	public TurretFX VFX;
 	public TurretAudio SFX;
-	public int upgradeLvl = 0;
 
-	private void Awake()
+	void Awake()
 	{
 		GetComponent<SphereCollider>().isTrigger = true;
 		GetComponent<SphereCollider>().radius = parameters.radius;
@@ -79,7 +78,7 @@ public class STT_Turret : MonoBehaviour
 		GetComponent<BoxCollider>().center = new Vector3(0, 1, 0);
 	}
 
-	private void FixedUpdate()
+	void FixedUpdate()
 	{
 		if (!parameters.active)
 		{
@@ -97,18 +96,17 @@ public class STT_Turret : MonoBehaviour
 		}
 	}
 
-	public void Upgrade()
+	public void UpgradeTo(int lvl)
 	{
-		upgradeLvl++;
-		switch (upgradeLvl)
+		switch (lvl)
 		{
-			case 1:
+			case 2:
 				parameters.ShootingDelay /= 2;
 				break;
-			case 2:
+			case 3:
 				parameters.radius *= 2;
 				break;
-			case 3:
+			case 4:
 				parameters.power *= 2;
 				break;
 			default:
