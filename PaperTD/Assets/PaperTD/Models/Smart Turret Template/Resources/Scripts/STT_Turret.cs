@@ -69,6 +69,7 @@ public class STT_Turret : MonoBehaviour
 	public TurretTargeting targeting;
 	public TurretFX VFX;
 	public TurretAudio SFX;
+	public int upgradeLvl = 0;
 
 	private void Awake()
 	{
@@ -93,6 +94,25 @@ public class STT_Turret : MonoBehaviour
 		{
 			Aiming();
 			Invoke(nameof(Shooting), parameters.ShootingDelay);
+		}
+	}
+
+	public void Upgrade()
+	{
+		upgradeLvl++;
+		switch (upgradeLvl)
+		{
+			case 1:
+				parameters.ShootingDelay /= 2;
+				break;
+			case 2:
+				parameters.radius *= 2;
+				break;
+			case 3:
+				parameters.power *= 2;
+				break;
+			default:
+				break;
 		}
 	}
 
